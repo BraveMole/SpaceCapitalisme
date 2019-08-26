@@ -1,0 +1,106 @@
+package gameUi;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
+import gameConcepts.Ressource;
+import gameObjets.Industrie;
+
+public class InterfaceIndustrie extends Interface {
+
+    private Industrie industrie;
+    private Skin skin;
+    private Table ressourceInventory;
+    private boolean clear = false;
+    private List listInventory;
+
+    public InterfaceIndustrie(Industrie i, Skin skin, float width, float height) {
+        super(skin, width * 0.2f, height * 0.5f, width / 4f, height / 40f, "InterfaceIndustrie");
+        this.industrie = i;
+        this.industrie.setInterface(this);
+        this.skin = skin;
+        Label nameLabel = new Label(this.industrie.toString(), this.skin, "title");
+        nameLabel.setAlignment(Align.center);
+        table.add(nameLabel).pad(table.getHeight() / 40f).padBottom(table.getHeight() / 30f).center().expandX().fillX();
+        this.table.top();
+        this.createInventory();
+    }
+
+    private void createInventory() {
+        this.table.row();
+        this.table.add(new Label("Inventaire :", skin));
+        table.row();
+        listInventory = new List(skin);
+        this.ressourceInventory = new Table();
+        Array<Actor> labelRessource = new Array<Actor>();
+        for (int i = 0; i < Ressource.diverse; i++) {
+            if (this.industrie.getInventory().getRessource(i) > 0) {
+                labelRessource.add(new Label(Ressource.getName(i), skin) {
+                    @Override
+                    public String toString() {
+                        return String.valueOf(this.getText());
+                    }
+                });
+                ressourceInventory.add(new Label(Float.toString(this.industrie.getInventory().getRessource(i)), skin));
+                ressourceInventory.row();
+            }
+        }
+        listInventory.setItems(labelRessource);
+        Table listeInventaire = new Table();
+        listeInventaire.setWidth(table.getWidth());
+        listeInventaire.add(listInventory).left().expandX().fillX();
+        listeInventaire.add(ressourceInventory).right();
+        this.table.add(listeInventaire).expandX().fillX();
+    }
+
+
+    public Industrie getIndustrie() {
+        return this.industrie;
+    }
+
+    @Override
+    public void clear() {
+        // TODO Auto-generated method stub
+
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof InterfaceIndustrie) {
+            InterfaceIndustrie f = (InterfaceIndustrie) o;
+            return (f.getIndustrie().getId() == this.getIndustrie().getId());
+        }
+        return false;
+
+    }
+
+
+    public boolean getCleared() {
+        return this.clear;
+    }
+
+    public void refreshInventory() {
+        Array<Actor> labelRessource = new Array<Actor>();
+        this.ressourceInventory.clearChildren();
+        for (int i = 0; i < Ressource.diverse; i++) {
+            if (this.industrie.getInventory().getRessource(i) > 0) {
+                System.out.println(this.industrie.getInventory().getRessource(i));
+                labelRessource.add(new Label(Ressource.getName(i), skin) {
+                    @Override
+                    public String toString() {
+                        return String.valueOf(this.getText());
+                    }
+                });
+                ressourceInventory.add(new Label(Float.toString(this.industrie.getInventory().getRessource(i)), skin));
+                ressourceInventory.row();
+            }
+        }
+        listInventory.setItems(labelRessource);
+
+    }
+}
