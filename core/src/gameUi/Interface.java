@@ -49,6 +49,9 @@ public class Interface extends Group implements Comparable<Actor> {
 			case("InterfaceIndustrie"):
 				im = new Image(new Texture(Gdx.files.internal("InterfaceIndustrie.jpg")));
 				break;
+			case("InterfaceVaisseau"):
+				im = new Image(new Texture(Gdx.files.internal("InterfaceVaisseau.jpg")));
+				break;
 		}
 		im.setHeight(height);
 		im.setWidth(widht);

@@ -12,12 +12,13 @@ import commerce.MarketPlace;
 import commerce.Trade;
 import gameConcepts.Inventory;
 import gameConcepts.SuperActor;
+import gameUi.InterfaceVaisseau;
 
 import static gameUi.WorldInputProcessor.palierZoom;
 import static gameUi.WorldInputProcessor.worldZoom;
 
 public class Vaisseau extends SuperActor implements HasInventory {
-
+	private InterfaceVaisseau interfaceVaisseau;
 	private float accelmax;
 	float scaleSpriteClose = 1f;
 	private Inventory cargo;
@@ -28,6 +29,7 @@ public class Vaisseau extends SuperActor implements HasInventory {
 	private float tempsVoyageRestant;
 	private float tempsVoyageTotal;
 	private Vector2 destination;
+	private Vector2 vitesse;
 	private Vector2 depart;
 	private int id;
 	static private float scaling=0.025f;
@@ -44,6 +46,7 @@ public class Vaisseau extends SuperActor implements HasInventory {
 		this.depart = new Vector2(x,y);
 		this.position = new Vector2(x,y);
 		this.destination = new Vector2(x,y);
+		this.vitesse =new Vector2(x,y);
 		this.listeTrade= new Array<>();
 
 		this.id= World.nbVaisseauCree;
@@ -60,6 +63,18 @@ public class Vaisseau extends SuperActor implements HasInventory {
 		this.tempsVoyageRestant=tempsVoyageTotal;
 		this.depart.set(position);
 		this.destination.set(x,y);
+	}
+
+	public void setInterfaceVaisseau(InterfaceVaisseau interfaceVaisseau){
+		this.interfaceVaisseau=interfaceVaisseau;
+		if (!this.listeTrade.isEmpty()){
+			if (this.listeTrade.get(0).getAcheteur().getImplatation().getPosition().epsilonEquals(this.destination)){
+				this.interfaceVaisseau.setDestination(this.listeTrade.get(0).getAcheteur().getImplatation());
+			}
+			else{
+				this.interfaceVaisseau.setDestination(this.listeTrade.get(0).getVendeur().getImplatation());
+			}
+		}
 	}
 
 	private void setDestination(Vector2 destination) {
@@ -91,6 +106,9 @@ public class Vaisseau extends SuperActor implements HasInventory {
 		this.listeTrade=i.getBestMegaTrade().getBestTrade(this.getInventory().getSizeAvailable());
 		if (this.listeTrade.notEmpty()) {
 			MarketPlace.removeVaisseauDisponible(this);
+			if (this.interfaceVaisseau!=null){
+				this.interfaceVaisseau.setDestination(this.listeTrade.get(0).getVendeur().getImplatation());
+			}
 			this.setDestination(this.listeTrade.get(0).getVendeur().getX(),this.listeTrade.get(0).getVendeur().getY());
 			return true;
 		}
@@ -143,10 +161,19 @@ public class Vaisseau extends SuperActor implements HasInventory {
 		if (this.listeTrade.notEmpty()) {
 			if (this.listeTrade.get(0).getVendeur().getImplatation().getPosition().epsilonEquals(destination)) {
 				this.AllTradesToCargo(true);
+				if (this.interfaceVaisseau!=null){
+					this.interfaceVaisseau.refreshInventory();
+				}
+				if (this.interfaceVaisseau!=null){
+					this.interfaceVaisseau.setDestination(this.listeTrade.get(0).getAcheteur().getImplatation());
+				}
 				this.setDestination(this.listeTrade.get(0).getAcheteur().getImplatation().getPosition());
 			}
 			else if (this.listeTrade.get(0).getAcheteur().getImplatation().getPosition().epsilonEquals(destination)){
 				this.AllTradesToCargo(false);
+				if (this.interfaceVaisseau!=null){
+					this.interfaceVaisseau.refreshInventory();
+				}
 				MarketPlace.addVaisseauDisponible(this);
 			}
 		}
@@ -156,7 +183,13 @@ public class Vaisseau extends SuperActor implements HasInventory {
 	public void act(float delta) {
 		this.tempsVoyageRestant-=delta;
 		float progress = this.tempsVoyageRestant < 0 ? 1 : 1f - tempsVoyageRestant /this.tempsVoyageTotal;
+		this.vitesse.set(position);
 		this.position.set(Interpolation.pow2.apply(this.depart.x,this.destination.x,progress),Interpolation.pow2.apply(this.depart.y,this.destination.y,progress));
+		this.vitesse.add(-this.position.x,-this.position.y);
+		this.vitesse.scl(delta);
+		if (this.interfaceVaisseau!=null){
+			this.interfaceVaisseau.setVitesse(this.vitesse.len());
+		}
 		if (progress==1){
 			this.isArrived();
 		}
@@ -207,10 +240,6 @@ public class Vaisseau extends SuperActor implements HasInventory {
 		else {
 			return ((Vaisseau) o).getId() == this.id;
 		}
-	}
-	
-	private double getDistance(Vector2 vect) {
-		return Math.sqrt(Math.pow(this.getX()-vect.x, 2)+Math.pow(this.getY()-vect.y, 2));
 	}
 
 	@Override

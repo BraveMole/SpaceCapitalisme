@@ -19,6 +19,7 @@ import com.world.World;
 import gameConcepts.SuperActor;
 import gameObjets.Planete;
 import gameObjets.Soleil;
+import gameObjets.Vaisseau;
 
 public class WorldInputProcessor implements InputProcessor{
 	public static float worldZoom;
@@ -331,6 +332,9 @@ public class WorldInputProcessor implements InputProcessor{
 						}
 						if (hit2 instanceof Planete) {
 							this.addInterface(new InterfacePlanete((Planete)hit2, skin, this.viewport.getScreenWidth(), this.viewport.getScreenHeight()));
+						}
+						if (hit2 instanceof Vaisseau){
+							this.addInterface(new InterfaceVaisseau((Vaisseau)hit2,skin,this.viewport.getScreenWidth(), this.viewport.getScreenHeight()));
 						}
 					}
 					else{

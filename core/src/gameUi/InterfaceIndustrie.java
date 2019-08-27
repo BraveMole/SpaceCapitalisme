@@ -15,7 +15,6 @@ public class InterfaceIndustrie extends Interface {
     private Industrie industrie;
     private Skin skin;
     private Table ressourceInventory;
-    private boolean clear = false;
     private List listInventory;
 
     public InterfaceIndustrie(Industrie i, Skin skin, float width, float height) {
@@ -79,13 +78,8 @@ public class InterfaceIndustrie extends Interface {
 
     }
 
-
-    public boolean getCleared() {
-        return this.clear;
-    }
-
     public void refreshInventory() {
-        Array<Actor> labelRessource = new Array<Actor>();
+        Array<Actor> labelRessource = new Array<>();
         this.ressourceInventory.clearChildren();
         for (int i = 0; i < Ressource.diverse; i++) {
             if (this.industrie.getInventory().getRessource(i) > 0) {
