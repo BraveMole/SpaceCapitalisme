@@ -41,7 +41,7 @@ public class Population implements Trader{
 		for (int i=0;i<produitConsomme.length;i+=2) {
 			this.prixachat[i]=Ressource.getBasicPrice((int)produitConsomme[i]);
 		}
-		//MarketPlace.addTrader(this);
+		MarketPlace.addTrader(this);
 	}
 	
 	@Override

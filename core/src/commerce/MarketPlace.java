@@ -112,7 +112,9 @@ public class MarketPlace {
 	static public void addTrader(Trader t) { //Est appele par le constructeur des traders
 	    nbTrader++;
 		currentIndex.setXY(getXindex(t.getX()),getYindex(t.getY()));
-		listeOffres.get(currentIndex).get(t.getOffre().getRessourceId()).add(t.getOffre());
+		if (t.getOffre()!=null){
+			listeOffres.get(currentIndex).get(t.getOffre().getRessourceId()).add(t.getOffre());
+		}
         for (Besoin besoin : t.getBesoin()) {
             listeBesoins.get(currentIndex).get(besoin.getRessourceId()).add(besoin);
         }
