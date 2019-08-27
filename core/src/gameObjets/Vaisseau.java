@@ -20,7 +20,7 @@ import static gameUi.WorldInputProcessor.worldZoom;
 public class Vaisseau extends SuperActor implements HasInventory {
 	private InterfaceVaisseau interfaceVaisseau;
 	private float accelmax;
-	float scaleSpriteClose = 1f;
+	private float scaleSpriteClose = 1f;
 	private Inventory cargo;
 	private Sprite sprite;
 	private Texture close;
@@ -28,8 +28,8 @@ public class Vaisseau extends SuperActor implements HasInventory {
 	private Array<Trade> listeTrade;
 	private float tempsVoyageRestant;
 	private float tempsVoyageTotal;
+	private float tempsEchantillonageVitesse;
 	private Vector2 destination;
-	private Vector2 vitesse;
 	private Vector2 depart;
 	private int id;
 	static private float scaling=0.025f;
@@ -46,7 +46,6 @@ public class Vaisseau extends SuperActor implements HasInventory {
 		this.depart = new Vector2(x,y);
 		this.position = new Vector2(x,y);
 		this.destination = new Vector2(x,y);
-		this.vitesse =new Vector2(x,y);
 		this.listeTrade= new Array<>();
 
 		this.id= World.nbVaisseauCree;
@@ -63,6 +62,7 @@ public class Vaisseau extends SuperActor implements HasInventory {
 		this.tempsVoyageRestant=tempsVoyageTotal;
 		this.depart.set(position);
 		this.destination.set(x,y);
+		this.tempsEchantillonageVitesse=0;
 	}
 
 	public void setInterfaceVaisseau(InterfaceVaisseau interfaceVaisseau){
@@ -79,10 +79,6 @@ public class Vaisseau extends SuperActor implements HasInventory {
 
 	private void setDestination(Vector2 destination) {
 		this.setDestination(destination.x, destination.y);
-	}
-
-	public Inventory getCargo() {
-		return this.cargo;
 	}
 
 	@Override
@@ -102,19 +98,18 @@ public class Vaisseau extends SuperActor implements HasInventory {
 		return false;
 	}
 
-	public boolean receiveTrade(HashmapMegaTrade i) {
+	public void receiveTrade(HashmapMegaTrade i) {
 		this.listeTrade=i.getBestMegaTrade().getBestTrade(this.getInventory().getSizeAvailable());
 		if (this.listeTrade.notEmpty()) {
-			MarketPlace.removeVaisseauDisponible(this);
-			if (this.interfaceVaisseau!=null){
-				this.interfaceVaisseau.setDestination(this.listeTrade.get(0).getVendeur().getImplatation());
-			}
-			this.setDestination(this.listeTrade.get(0).getVendeur().getX(),this.listeTrade.get(0).getVendeur().getY());
-			return true;
-		}
+            MarketPlace.removeVaisseauDisponible(this);
+            if (this.interfaceVaisseau != null) {
+                this.interfaceVaisseau.setDestination(this.listeTrade.get(0).getVendeur().getImplatation());
+            }
+            this.setDestination(this.listeTrade.get(0).getVendeur().getX(), this.listeTrade.get(0).getVendeur().getY());
+        }
 		else{
-			return false;
-		}
+		    MarketPlace.addVaisseauDisponible(this);
+        }
 	}
 
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
@@ -183,13 +178,15 @@ public class Vaisseau extends SuperActor implements HasInventory {
 	public void act(float delta) {
 		this.tempsVoyageRestant-=delta;
 		float progress = this.tempsVoyageRestant < 0 ? 1 : 1f - tempsVoyageRestant /this.tempsVoyageTotal;
-		this.vitesse.set(position);
 		this.position.set(Interpolation.pow2.apply(this.depart.x,this.destination.x,progress),Interpolation.pow2.apply(this.depart.y,this.destination.y,progress));
-		this.vitesse.add(-this.position.x,-this.position.y);
-		this.vitesse.scl(delta);
-		if (this.interfaceVaisseau!=null){
-			this.interfaceVaisseau.setVitesse(this.vitesse.len());
-		}
+
+		if (this.interfaceVaisseau!=null) {
+				if (progress < 0.5) {
+					this.interfaceVaisseau.setVitesse((int)Interpolation.linear.apply(0, accelmax * tempsVoyageTotal / 2, progress * 2)/1000);
+				} else {
+					this.interfaceVaisseau.setVitesse((int)Interpolation.linear.apply(accelmax * tempsVoyageTotal / 2, 0, progress * 2 - 1)/1000);
+				}
+			}
 		if (progress==1){
 			this.isArrived();
 		}

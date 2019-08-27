@@ -25,7 +25,6 @@ public abstract class Implantation extends SuperActor {
 	public HashmapMegaTrade getListeMegaTrade() {
 		return listeMegaTrade;
 	}
-
 	private HashmapMegaTrade listeMegaTrade = new HashmapMegaTrade();
 	private Array<Industrie> listeIndustrie = new Array<>();
 	private Array<Ressource> ressourcePrimaireDisponible;
