@@ -11,23 +11,38 @@ import gameObjets.Trader;
 
 public class Population implements Trader{
 	private static float [] produitConsomme;
-	private static float StockRessource =5;
-	private static final double DistanceCoef =0.0000001;
-	
+	private static int [] prioriteAchat;
+	private static int nbBesoin=0;
 	private int nbTravailleur;
 	private Inventory inventory;
-	private int[]prixachat;
 	private Array<Besoin> listeBesoin;
 	private Implantation implantation;
-	
-	public static void besoinInit(){
+	private static int stockPopulation = 10;
+	private static int stockBas =5;
+	private static int stockHaut=2;
+	private float tresorie;
+
+	public static void initPopBesoin(){
 		produitConsomme = new float[Ressource.ressourcePossible.size()];
+		prioriteAchat = new int[Ressource.ressourcePossible.size()];
 		String[] wholeFile = Gdx.files.internal("BesoinPop.txt").readString().split(";");
-		int i=0;
+		int i=0;String[] s2;
 		for (String s : wholeFile) {
 			if (!s.isEmpty()){
-				produitConsomme[i]=Float.parseFloat(s)/100f;
-				i++;
+				s2 = s.split("-");
+				produitConsomme[i]=Float.parseFloat(s2[0])/100f;
+				prioriteAchat[i]=Integer.parseInt(s2[1].strip());
+				nbBesoin++;
+			}
+			i++;
+		}
+	}
+
+	private void besoinInit(){
+		this.listeBesoin.setSize(nbBesoin);
+		for (int i = 0; i < produitConsomme.length; i++) {
+			if (produitConsomme[i]!=0) {
+				this.listeBesoin.set(prioriteAchat[i], new Besoin(i, 0, Ressource.getBasicPrice(i)*2, this));
 			}
 		}
 	}
@@ -37,13 +52,10 @@ public class Population implements Trader{
 		this.inventory= new Inventory();
 		this.implantation=implantation;
 		this.listeBesoin= new Array<>();
-		this.prixachat = new int[produitConsomme.length];
-		for (int i=0;i<produitConsomme.length;i+=2) {
-			this.prixachat[i]=Ressource.getBasicPrice((int)produitConsomme[i]);
-		}
+		this.besoinInit();
 		MarketPlace.addTrader(this);
 	}
-	
+
 	@Override
 	public boolean receivingCargo(int ressourceId, float quantity) {
 		if (quantity<0) {
@@ -70,17 +82,21 @@ public class Population implements Trader{
 	}
 	@Override
 	public void updateBesoin() {
-		this.listeBesoin.clear();
-		for (int i=0;i<produitConsomme.length;i++) {
-			if ((Population.StockRessource*this.nbTravailleur * produitConsomme[i])
-					-this.inventory.getRessource(i) >0) {
-				this.listeBesoin.add(new Besoin(i,
-						Population.StockRessource*this.nbTravailleur * Population.produitConsomme[i]
-						-this.inventory.getRessource(i)
-						, this.prixachat[i], this));
+		float stockmanquant;int j=0;
+		for (int i = 0; i < produitConsomme.length; i++) {
+			if (produitConsomme[i] != 0) {
+				stockmanquant = Math.max(produitConsomme[i]*stockPopulation*nbTravailleur-this.inventory.getRessource(i),0);
+				if (stockmanquant>produitConsomme[i]*stockBas *nbTravailleur){
+                    listeBesoin.get(prioriteAchat[i]).scalePrixMax(1.1f);
+				}
+				else if(stockmanquant<produitConsomme[i]*stockHaut*nbTravailleur){
+				    listeBesoin.get(prioriteAchat[i]).scalePrixMax(0.9f);
+                }
+				listeBesoin.get(prioriteAchat[i]).setQuantity((float)Math.ceil(stockmanquant));
 			}
 		}
-		
+
+
 	}
 	public int getNbTravailleur(){
 		return this.nbTravailleur;
@@ -91,8 +107,9 @@ public class Population implements Trader{
 
 	@Override
 	public void cycle() {
+		this.updateBesoin();
 		for (int i = 0; i < Ressource.diverse; i++) {
-			this.inventory.addRessource(i,this.nbTravailleur*Population.produitConsomme[i]);
+			//this.inventory.addRessource(i,this.nbTravailleur*Population.produitConsomme[i]);
 		}
 	}
 
@@ -124,13 +141,13 @@ public class Population implements Trader{
 	@Override
 	public void addObjetVendu(float nbobjetvendu) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public Inventory getInventory() {
 		return this.inventory;
 	}
-	
+
 
 }

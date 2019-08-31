@@ -46,6 +46,11 @@ public class GalaxyGenerator {
             for (int i1 = 0; i1 < nbPlanete; i1++) {
                 this.listeObjet.add(Planete.planeteGenerator(this.listeObjet.get(this.listeObjet.size-1-i1).getX(),this.listeObjet.get(this.listeObjet.size-1-i1).getY(),assets));
                 this.listeObjet.add(new Vaisseau(10000,assets.getVaisseauTexture(),assets.getVaisseauFarTexture(),1000,this.listeObjet.get(listeObjet.size-1).getX(),this.listeObjet.get(listeObjet.size-1).getY()));
+                this.listeObjet.add(new Vaisseau(10000,assets.getVaisseauTexture(),assets.getVaisseauFarTexture(),1000,this.listeObjet.get(listeObjet.size-1).getX(),this.listeObjet.get(listeObjet.size-1).getY()));
+                this.listeObjet.add(new Vaisseau(10000,assets.getVaisseauTexture(),assets.getVaisseauFarTexture(),1000,this.listeObjet.get(listeObjet.size-1).getX(),this.listeObjet.get(listeObjet.size-1).getY()));
+                this.listeObjet.add(new Vaisseau(10000,assets.getVaisseauTexture(),assets.getVaisseauFarTexture(),1000,this.listeObjet.get(listeObjet.size-1).getX(),this.listeObjet.get(listeObjet.size-1).getY()));
+                this.listeObjet.add(new Vaisseau(10000,assets.getVaisseauTexture(),assets.getVaisseauFarTexture(),1000,this.listeObjet.get(listeObjet.size-1).getX(),this.listeObjet.get(listeObjet.size-1).getY()));
+                this.listeObjet.add(new Vaisseau(10000,assets.getVaisseauTexture(),assets.getVaisseauFarTexture(),1000,this.listeObjet.get(listeObjet.size-1).getX(),this.listeObjet.get(listeObjet.size-1).getY()));
             }
         }
 

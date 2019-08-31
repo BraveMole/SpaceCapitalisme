@@ -17,7 +17,12 @@ public class Industrie implements Trader{
 
 	private Recette recette;
 	private Inventory inventory;
-	private int prixvente;
+
+    public int getPrixvente() {
+        return prixvente;
+    }
+
+    private int prixvente;
 	private Array<Besoin> listeBesoin;
 	private Offre offre;
 	private int nbobjetsproduits;
@@ -112,6 +117,9 @@ public class Industrie implements Trader{
 			this.prixvente*= Industrie.LittleRaise; //Si nos stocks de produits � vendre sont faible, on peut augmenter le prix
 		}
 		offre.setPrix(this.prixvente);
+		if( this.inter!=null){
+		    this.inter.refreshPrice(this.prixvente);
+        }
 		offre.setQuantity(objetsavendre);
 	}
 

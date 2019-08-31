@@ -9,9 +9,9 @@ public class Trade implements Comparable<Trade>{
 	final private Trader vendeur;
 	final private float quantity;
 	final private float sizetaken;
-	final private int price;
+	final private float price;
 	final private double indiceprofitabilite;
-	Trade(int ressourceId, Trader acheteur, Trader vendeur, float quantity, int price) {
+	Trade(int ressourceId, Trader acheteur, Trader vendeur, float quantity, float price) {
 		this.ressourceId=ressourceId;this.acheteur=acheteur;this.vendeur=vendeur;this.quantity=quantity;this.price=price;
 		this.sizetaken=this.quantity* Ressource.getRoomTaken(this.ressourceId);
 		this.indiceprofitabilite = this.price/(this.sizetaken);
@@ -28,7 +28,7 @@ public class Trade implements Comparable<Trade>{
 	public float getQuantity() {
 		return quantity;
 	}
-	int getPrice() {
+	float getPrice() {
 		return price;
 	}
 	private double getIndiceprofitabilite() {

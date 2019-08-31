@@ -27,7 +27,6 @@ public class Application extends ApplicationAdapter {
 	private void ressourceInit() {
 		Ressource.RessourceCreation();
 		Recette.RecetteCreation();
-		Population.besoinInit();
 	}
 
 	@Override

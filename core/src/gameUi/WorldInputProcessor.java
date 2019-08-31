@@ -48,7 +48,7 @@ public class WorldInputProcessor implements InputProcessor{
 	private float cameraZoomOrigin=1f;
 	private float cameraZoomTarget =1f;
 	private int zoomlevel;
-	static public int[] palierZoom = new int[]{10,35,200};
+	static public int[] palierZoom = new int[]{10,35,300};
 	private float timeToCameraZoomTarget=0;
 	private AlphaAction fade;
 

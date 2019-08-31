@@ -14,7 +14,7 @@ public class Besoin implements Comparable<Besoin>{
 	public final MapIndex indexpos;
 	private int ressourceId;
 	private float quantity;
-	private int prixmax;
+	private float prixmax;
 	private Array<Float> souvenirBesoin;
 	private Trader t;
 	public Besoin (int ressourceId, float quantity, int prixmax, Trader t) {
@@ -37,10 +37,13 @@ public class Besoin implements Comparable<Besoin>{
 	public void scalePrixMax(float scalefactor){
 		this.prixmax*=scalefactor;
 	}
+	public void setPrixmax(float prixmax){
+		this.prixmax=prixmax;
+	}
 	public float getQuantity() {
 		return this.quantity;
 	}
-	public int getPrixmax() {
+	public float getPrixmax() {
 		return this.prixmax;
 	}
 	public Trader getTrader() {
@@ -56,6 +59,12 @@ public class Besoin implements Comparable<Besoin>{
 
     @Override
     public int compareTo(Besoin o) {
-        return o.getPrixmax()-this.prixmax;
+        if (o.getPrixmax()-this.prixmax>0){
+        	return 1;
+		}
+        else if (o.getPrixmax()-this.prixmax<0){
+        	return -1;
+		}
+        return 0;
     }
 }

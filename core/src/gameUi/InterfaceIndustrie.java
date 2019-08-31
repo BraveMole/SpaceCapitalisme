@@ -15,6 +15,7 @@ public class InterfaceIndustrie extends Interface {
     private Industrie industrie;
     private Skin skin;
     private Table ressourceInventory;
+    private Label labelprixvente;
     private List listInventory;
 
     public InterfaceIndustrie(Industrie i, Skin skin, float width, float height) {
@@ -26,7 +27,17 @@ public class InterfaceIndustrie extends Interface {
         nameLabel.setAlignment(Align.center);
         table.add(nameLabel).pad(table.getHeight() / 40f).padBottom(table.getHeight() / 30f).center().expandX().fillX();
         this.table.top();
+        this.createPrixVente();
         this.createInventory();
+    }
+
+    private void createPrixVente(){
+        Table prixvente = new Table();
+        labelprixvente = new Label(Float.toString(industrie.getPrixvente()),skin);
+        prixvente.add(new Label("Prix vente :  ", skin)).left();
+        prixvente.add(labelprixvente).fillX().right();
+        this.table.row();
+        this.table.add(prixvente).padBottom(10f);
     }
 
     private void createInventory() {
@@ -64,7 +75,10 @@ public class InterfaceIndustrie extends Interface {
     @Override
     public void clear() {
         // TODO Auto-generated method stub
+    }
 
+    public void refreshPrice(float price){
+        this.labelprixvente.setText(Float.toString(price));
     }
 
 

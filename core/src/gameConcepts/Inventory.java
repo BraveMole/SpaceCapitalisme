@@ -7,7 +7,7 @@ public class Inventory {
 	private float[] cargo;
 	
 	public Inventory() {
-		this(100000);
+		this(10000000);
 	}
 	
 	public Inventory(float maxsize) {

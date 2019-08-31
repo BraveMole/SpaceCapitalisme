@@ -115,11 +115,17 @@ public class Vaisseau extends SuperActor implements HasInventory {
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	private boolean TradeToCargo(Trade t,boolean charger) {
 		if (charger) {
-			return this.startingCargoExchange(t.getRessourceId(), -t.getQuantity(), t.getVendeur());
+			if (this.startingCargoExchange(t.getRessourceId(), -t.getQuantity(), t.getVendeur())){
+				return true;
+			}
 		}
 		else {
-			return this.startingCargoExchange(t.getRessourceId(), t.getQuantity(), t.getAcheteur());
+			if (this.startingCargoExchange(t.getRessourceId(), t.getQuantity(), t.getAcheteur())){
+				return true;
+			}
 		}
+		System.out.print("erreur");
+		return false;
 	}
 
 	private void AllTradesToCargo(boolean charger) {

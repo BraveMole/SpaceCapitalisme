@@ -12,7 +12,7 @@ import static commerce.MarketPlace.getYindex;
 public class Offre implements Comparable<Offre>{
 	private final int ressourceId;
 	private float quantity;
-	private int prix;
+	private float prix;
 	private final Trader t;
 	private Array<Float> souvenirVentes;
 	public MapIndex indexpos;
@@ -30,7 +30,7 @@ public class Offre implements Comparable<Offre>{
 	public float getQuantity() {
 		return this.quantity;
 	}
-	public int getPrix() {
+	public float getPrix() {
 		return this.prix;
 	}
 	public Trader getTrader() {
@@ -56,6 +56,12 @@ public class Offre implements Comparable<Offre>{
 
 	@Override
 	public int compareTo(Offre o) {
-		return (o.getPrix()-this.prix);
+		if (o.getPrix()>this.prix){
+			return 1;
+		}
+		else if(o.getPrix()<this.prix){
+			return -1;
+		}
+		return 0;
 	}
 }

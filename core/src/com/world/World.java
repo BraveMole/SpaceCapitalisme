@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import commerce.MarketPlace;
+import gameConcepts.Population;
 import gameUi.WorldInputProcessor;
 
 public class World extends Stage implements InputProcessor{
@@ -26,6 +27,7 @@ public class World extends Stage implements InputProcessor{
 	World() {
 		this.assetmanager = new Assets();
 		assetmanager.finishLoading();
+		Population.initPopBesoin();
         this.createWorld();
 		inputProcessor = new WorldInputProcessor(this.getViewport(),this);
 	}
