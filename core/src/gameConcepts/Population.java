@@ -8,6 +8,7 @@ import commerce.Offre;
 import gameObjets.HasInventory;
 import gameObjets.Implantation;
 import gameObjets.Trader;
+import test.TestWorldSettings;
 
 public class Population implements Trader{
 	private static float [] produitConsomme;
@@ -23,18 +24,25 @@ public class Population implements Trader{
 	private float tresorie;
 
 	public static void initPopBesoin(){
-		produitConsomme = new float[Ressource.ressourcePossible.size()];
-		prioriteAchat = new int[Ressource.ressourcePossible.size()];
-		String[] wholeFile = Gdx.files.internal("BesoinPop.txt").readString().split(";");
-		int i=0;String[] s2;
-		for (String s : wholeFile) {
-			if (!s.isEmpty()){
-				s2 = s.split("-");
-				produitConsomme[i]=Float.parseFloat(s2[0])/100f;
-				prioriteAchat[i]=Integer.parseInt(s2[1].strip());
-				nbBesoin++;
+		if (TestWorldSettings.test){
+			produitConsomme=TestWorldSettings.produitConsommePop();
+			prioriteAchat=TestWorldSettings.prioriteAchatPop();
+		}
+		else {
+			produitConsomme = new float[Ressource.ressourcePossible.size];
+			prioriteAchat = new int[Ressource.ressourcePossible.size];
+			String[] wholeFile = Gdx.files.internal("BesoinPop.txt").readString().split(";");
+			int i = 0;
+			String[] s2;
+			for (String s : wholeFile) {
+				if (!s.isEmpty()) {
+					s2 = s.split("-");
+					produitConsomme[i] = Float.parseFloat(s2[0]) / 100f;
+					prioriteAchat[i] = Integer.parseInt(s2[1].strip());
+					nbBesoin++;
+				}
+				i++;
 			}
-			i++;
 		}
 	}
 

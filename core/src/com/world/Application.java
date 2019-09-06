@@ -1,20 +1,16 @@
 package com.world;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
-import commerce.MarketPlace;
-import gameConcepts.Population;
 import gameConcepts.Recette;
 import gameConcepts.Ressource;
+import test.TestWorldSettings;
 
 public class Application extends ApplicationAdapter {
 	World world;
 
 	@Override
 	public void create () {
+		TestWorldSettings.test=true;
 		this.ressourceInit();
 		this.world = new World();
 	}

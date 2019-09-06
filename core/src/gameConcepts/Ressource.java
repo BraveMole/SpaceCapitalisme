@@ -1,12 +1,11 @@
 package gameConcepts;
 
 import com.badlogic.gdx.Gdx;
-
-import java.util.ArrayList;
-import java.lang.String;
+import com.badlogic.gdx.utils.Array;
+import test.TestWorldSettings;
 
 public class Ressource {
-	static public ArrayList<Ressource> ressourcePossible;
+	static public Array<Ressource> ressourcePossible;
 	static public int diverse=0; //Number of different ressources
 	static public int nbprimaire=0;//nb RessourcePrimaire;
 	private final float roomtaken;
@@ -20,24 +19,33 @@ public class Ressource {
 	private Recette recette;
 
 	static public void RessourceCreation(){
-		Ressource.ressourcePossible = new ArrayList<>();
-		String[] wholeFile = Gdx.files.internal("Ressource.txt").readString().split("/");
-		String[] wholeLine;
-		for (int i = 0;i<wholeFile.length;i++){
-			wholeLine = wholeFile[i].strip().split(";");
-			diverse++;
-			if (!Boolean.parseBoolean(wholeLine[7])){
-				Ressource.ressourcePossible.add(new Ressource(wholeLine[0],wholeLine[1],wholeLine[2],wholeLine[3],wholeLine[4],wholeLine[5],wholeLine[6],false));
-			}
-			else{
-				Ressource.ressourcePossible.add(new Ressource(wholeLine[0],wholeLine[1],wholeLine[2],wholeLine[3],wholeLine[4],wholeLine[5],wholeLine[6],true,wholeLine[8]));
+		if (TestWorldSettings.test){
+			Ressource.ressourcePossible  = TestWorldSettings.RessourceCreation();
+			for (Ressource ressource : ressourcePossible) {
+				if (ressource.isPrimaire()) {
+					nbprimaire++;
+				}
 			}
 		}
-        for (Ressource ressource : ressourcePossible) {
-            if (ressource.isPrimaire()) {
-                nbprimaire++;
-            }
-        }
+		else {
+			Ressource.ressourcePossible = new Array();
+			String[] wholeFile = Gdx.files.internal("Ressource.txt").readString().split("/");
+			String[] wholeLine;
+			for (int i = 0; i < wholeFile.length; i++) {
+				wholeLine = wholeFile[i].strip().split(";");
+				diverse++;
+				if (!Boolean.parseBoolean(wholeLine[7])) {
+					Ressource.ressourcePossible.add(new Ressource(wholeLine[0], wholeLine[1], wholeLine[2], wholeLine[3], wholeLine[4], wholeLine[5], wholeLine[6], false));
+				} else {
+					Ressource.ressourcePossible.add(new Ressource(wholeLine[0], wholeLine[1], wholeLine[2], wholeLine[3], wholeLine[4], wholeLine[5], wholeLine[6], true, wholeLine[8]));
+				}
+			}
+			for (Ressource ressource : ressourcePossible) {
+				if (ressource.isPrimaire()) {
+					nbprimaire++;
+				}
+			}
+		}
 	}
 	static public String getName(int id) {
 		return Ressource.ressourcePossible.get(id).getName();
