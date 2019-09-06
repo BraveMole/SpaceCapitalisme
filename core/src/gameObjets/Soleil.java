@@ -31,7 +31,6 @@ public class Soleil extends SuperActor {
         sprite.setRegion(close);
         sprite.setBounds(x-sprite.getTexture().getWidth()/2,y-sprite.getTexture().getHeight()/2,sprite.getTexture().getWidth(),sprite.getTexture().getHeight());
         this.setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(),sprite.getHeight());
-        System.out.print(this.getX());
     }
 
     public int getBackground(){

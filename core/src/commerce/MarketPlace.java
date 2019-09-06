@@ -75,14 +75,11 @@ public class MarketPlace {
             timer= TimeUtils.millis();
             nbTrade=0;
             runTrade();
-            System.out.println("nb Trader = "+nbTrader);
             System.out.println("nb trade = "+nbTrade);
-            System.out.println("temps ecoule = "+(TimeUtils.millis()-timer));
 		}
 		if (timeElapsed2>cycleRechercheVaisseau) {
 			timer= TimeUtils.millis();
 			runTransportationAssignment();
-			System.out.println("temps ecoule = "+(TimeUtils.millis()-timer));
 			timeElapsed2=0;
 		}
 

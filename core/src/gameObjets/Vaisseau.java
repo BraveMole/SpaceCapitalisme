@@ -32,7 +32,7 @@ public class Vaisseau extends SuperActor implements HasInventory {
 	private Vector2 destination;
 	private Vector2 depart;
 	private int id;
-	static private float scaling=0.025f;
+	static private float scaling=0.012f;
 
 
 	private Vaisseau(float accelmax, Texture close, Texture far, Inventory cargo, float x, float y) {
@@ -124,7 +124,6 @@ public class Vaisseau extends SuperActor implements HasInventory {
 				return true;
 			}
 		}
-		System.out.print("erreur");
 		return false;
 	}
 
@@ -214,7 +213,7 @@ public class Vaisseau extends SuperActor implements HasInventory {
 			sprite.setBounds(this.position.x-sprite.getTexture().getWidth()*scale/2*scaling,this.position.y-sprite.getTexture().getHeight()*scale/2*scaling,sprite.getTexture().getWidth()*scale*scaling,sprite.getTexture().getHeight()*scale*scaling);
 			this.setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(),sprite.getHeight());
 		}
-		else if (worldZoom>palierZoom[0]){
+		else if (worldZoom>palierZoom[1]){
 			sprite.setBounds(this.position.x-sprite.getTexture().getWidth()*worldZoom/2*scaling,this.position.y-sprite.getTexture().getHeight()*worldZoom/2*scaling,sprite.getTexture().getWidth()*worldZoom*scaling,sprite.getTexture().getHeight()*worldZoom*scaling);
 			this.setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(),sprite.getHeight());
 		}
