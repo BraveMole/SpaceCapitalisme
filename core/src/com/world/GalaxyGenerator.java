@@ -33,6 +33,7 @@ public class GalaxyGenerator {
                 (sens*diametrecara *(float)(Math.sqrt(angle)*Math.sin(angle)))+rdispersion*(float)(Math.sin(angledispersion)));
     }
     public GalaxyGenerator(float diametrecara, float nbtour,int nbetoile,Assets assets,float dispersion){
+        
         this.dispersion = dispersion;
         this.listeObjet = new Array<>();
         this.diametrecara = diametrecara;

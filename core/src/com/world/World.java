@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Array;
 import commerce.MarketPlace;
 import gameConcepts.Population;
 import gameUi.WorldInputProcessor;
+import test.TestWorldSettings;
 
 public class World extends Stage implements InputProcessor{
 
@@ -33,10 +34,18 @@ public class World extends Stage implements InputProcessor{
 	}
 
 	private void createWorld() {
-		GalaxyGenerator galaxyGenerator = new GalaxyGenerator(20000000,1,1000,assetmanager,4000000);
-		Array<Actor> listeObjet = galaxyGenerator.getListeObjet();
-		for (Actor actor : listeObjet) {
-			this.addActor(actor);
+		if (TestWorldSettings.test){
+			Array<Actor> listeObjet = TestWorldSettings.createTestWorld(assetmanager);
+			for (Actor actor : listeObjet) {
+				this.addActor(actor);
+			}
+		}
+		else {
+			GalaxyGenerator galaxyGenerator = new GalaxyGenerator(20000000, 1, 1000, assetmanager, 4000000);
+			Array<Actor> listeObjet = galaxyGenerator.getListeObjet();
+			for (Actor actor : listeObjet) {
+				this.addActor(actor);
+			}
 		}
 	}
 

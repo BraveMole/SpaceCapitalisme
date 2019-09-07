@@ -1,6 +1,5 @@
 package gameObjets;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.world.Assets;
@@ -37,7 +36,7 @@ public class Planete extends Implantation{
 
 
 
-	private Planete(Sprite sprite,int size,float x, float y, Texture far,int population, boolean habitable, String name) {
+	public Planete(Sprite sprite, int size, float x, float y, Texture far, int population, boolean habitable, String name) {
 		super(sprite,size,x,y,sprite.getTexture(),far,population,name,habitable);
 		generateRessource(this);
 		generateIndustries(this);

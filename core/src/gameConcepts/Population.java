@@ -27,6 +27,11 @@ public class Population implements Trader{
 		if (TestWorldSettings.test){
 			produitConsomme=TestWorldSettings.produitConsommePop();
 			prioriteAchat=TestWorldSettings.prioriteAchatPop();
+			for (float v : produitConsomme) {
+				if (v>0) {
+					nbBesoin++;
+				}
+			}
 		}
 		else {
 			produitConsomme = new float[Ressource.ressourcePossible.size];

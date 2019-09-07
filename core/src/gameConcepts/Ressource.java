@@ -26,6 +26,7 @@ public class Ressource {
 					nbprimaire++;
 				}
 			}
+			diverse = ressourcePossible.size;
 		}
 		else {
 			Ressource.ressourcePossible = new Array();
